@@ -9,9 +9,7 @@ public class Espaco {
     public Espaco(int esperado, final boolean fixo) {
         this.esperado = esperado;
         this.fixo = fixo;
-        if(fixo){
-            atual = esperado;
-        }
+        this.atual = fixo ? esperado : null;
     }
 
     public Integer getAtual() {
@@ -19,7 +17,7 @@ public class Espaco {
     }
 
     public void setAtual(Integer atual) {
-        if(fixo){
+        if (fixo) {
             return;
         }
         this.atual = atual;
