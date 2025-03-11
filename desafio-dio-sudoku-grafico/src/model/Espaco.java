@@ -6,17 +6,19 @@ public class Espaco {
     private final int esperado;
     private final boolean fixo;
 
-    public Espaco(int esperado, final boolean fixo) {
+    public Espaco(final int esperado, final boolean fixo) {
         this.esperado = esperado;
         this.fixo = fixo;
-        this.atual = fixo ? esperado : null;
+        if(fixo){
+            atual = esperado;
+        }
     }
 
     public Integer getAtual() {
         return atual;
     }
 
-    public void setAtual(Integer atual) {
+    public void setAtual(final Integer atual) {
         if (fixo) {
             return;
         }

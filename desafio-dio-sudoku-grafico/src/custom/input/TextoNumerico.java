@@ -1,13 +1,15 @@
 package custom.input;
 
 import model.Espaco;
+import service.EventListener;
+import service.EventoEnum;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 
-public class TextoNumerico extends JTextField {
+public class TextoNumerico extends JTextField implements EventListener {
 
     private final Espaco espaco;
 
@@ -51,5 +53,12 @@ public class TextoNumerico extends JTextField {
             }
 
         });
+    }
+
+    @Override
+    public void update(EventoEnum tipoEvento) {
+        if(tipoEvento.equals(EventoEnum.LIMPAR_ESPACO) && (this.isEnabled())){
+            this.setText("");
+        }
     }
 }

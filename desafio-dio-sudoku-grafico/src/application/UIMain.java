@@ -14,9 +14,8 @@ public class UIMain {
 
     public static void main(String[] args) {
         final var jogoConfig = Stream.of(args).collect(toMap(
-                k -> k.split(",")[0],
-                v -> v.split(",")[1],
-                (v1, v2) -> v1 + ";" + v2
+                k -> k.split(";")[0],
+                v -> v.split(";")[1]
         ));
         var mainScreen = new MainScreen(jogoConfig);
         mainScreen.buildMainScreen();

@@ -2,9 +2,7 @@ package utilities;
 
 public final class ModeloDeQuadro {
 
-    private ModeloDeQuadro(){
-
-    }
+    private ModeloDeQuadro(){}
 
     public final static String BOARD_TEMPLATE =
             """

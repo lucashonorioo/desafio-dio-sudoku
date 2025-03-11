@@ -27,9 +27,8 @@ public class Main {
     public static void main(String[] args) {
 
         final var posicoes = Stream.of(args).collect(toMap(
-                k -> k.split(",")[0],
-                v -> v.split(",")[1],
-                (v1, v2) -> v1 + ";" + v2
+                k -> k.split(";")[0],
+                v -> v.split(";")[1]
         ));
         var opcao = -1;
         while(true) {
@@ -43,6 +42,7 @@ public class Main {
             System.out.println("7 - Finalizar jogo");
             System.out.println("8 - Sair");
             System.out.print("Digite: ");
+
             opcao = sc.nextInt();
 
 
@@ -71,17 +71,10 @@ public class Main {
             espacos.add(new ArrayList<>());
             for (int j = 0; j < LIMITE_BORDA; j++) {
                 var configuracaoPosicao = posicoes.get("%s,%s".formatted(i, j));
-                if (configuracaoPosicao != null) {
-                    var esperado = Integer.parseInt(configuracaoPosicao.split(";")[0]);
-                    var fixo = Boolean.parseBoolean(configuracaoPosicao.split(";")[1]);
+                    var esperado = Integer.parseInt(configuracaoPosicao.split(",")[0]);
+                    var fixo = Boolean.parseBoolean(configuracaoPosicao.split(",")[1]);
                     var espacoAtual = new Espaco(esperado, fixo);
-
-                    System.out.printf("Posição [%d,%d] - Esperado: %d | Fixo: %b%n", i, j, esperado, fixo);
-
                     espacos.get(i).add(espacoAtual);
-                } else {
-                    espacos.get(i).add(new Espaco(0, false));
-                }
             }
         }
 
@@ -128,16 +121,10 @@ public class Main {
         var args = new Object[81];
         var argPos = 0;
         for (int i = 0; i < LIMITE_BORDA; i++) {
-            for (int j = 0; j < LIMITE_BORDA; j++) {
-                var espaco = borda.getEspacos().get(i).get(j);
-                var valor = espaco.getAtual() != null ? espaco.getAtual() : " ";
-
-                System.out.printf("Posição [%d,%d]: %s%n", i, j, valor);
-
-                args[argPos++] = " " + valor;
+            for (var col : borda.getEspacos()) {
+                args[argPos++] = " " + ((isNull(col.get(i).getAtual())) ? " " : col.get(i).getAtual());
             }
         }
-
         System.out.println("Seu jogo se encontra da seguinte forma:");
         System.out.printf((BOARD_TEMPLATE) + "\n", args);
     }
@@ -147,22 +134,13 @@ public class Main {
             System.out.println("O jogo ainda não foi iniciado");
             return;
         }
-
-        var args = new Object[81];
-        var argPos = 0;
-
-        for (int i = 0; i < LIMITE_BORDA; i++) {
-            for (int j = 0; j < LIMITE_BORDA; j++) {
-                var espaco = borda.getEspacos().get(i).get(j);
-                var valor = (espaco.getAtual() != null) ? espaco.getAtual().toString() : " ";
-
-                System.out.printf("Posição [%d,%d]: %s%n", i, j, valor);
-
-                args[argPos++] = " ";
-            }
+        System.out.printf("Status do jogo atual: %s\n", borda.getStatus().getLabel());
+        if(borda.temErros()){
+            System.out.println("O jogo contém erros");
         }
-        System.out.println("Seu jogo se encontra da seguinte forma:");
-        System.out.printf((BOARD_TEMPLATE) + "\n", args);
+        else{
+            System.out.println("O jogo não contém erros");
+        }
     }
 
     private static void limparJogo() {

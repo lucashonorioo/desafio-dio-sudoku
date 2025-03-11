@@ -43,18 +43,11 @@ public class BordaService {
         for (int i = 0; i < LIMITE_BORDA; i++) {
             espacos.add(new ArrayList<>());
             for (int j = 0; j < LIMITE_BORDA; j++) {
-                var configuracaoPosicao = configJogo.get("%s,%s".formatted(i, j));
-                if (configuracaoPosicao != null) {
-                    var esperado = Integer.parseInt(configuracaoPosicao.split(";")[0]);
-                    var fixo = Boolean.parseBoolean(configuracaoPosicao.split(";")[1]);
-                    var espacoAtual = new Espaco(esperado, fixo);
-
-                    System.out.printf("Posição [%d,%d] - Esperado: %d | Fixo: %b%n", i, j, esperado, fixo);
-
-                    espacos.get(i).add(espacoAtual);
-                } else {
-                    espacos.get(i).add(new Espaco(0, false));
-                }
+                var posicaoConfig = configJogo.get("%s,%s".formatted(i, j));
+                var esperado = Integer.parseInt(posicaoConfig.split(",")[0]);
+                var fixo = Boolean.parseBoolean(posicaoConfig.split(",")[1]);
+                var espacoAtual = new Espaco(esperado, fixo);
+                espacos.get(i).add(espacoAtual);
             }
         }
 
